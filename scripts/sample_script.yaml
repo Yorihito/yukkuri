@@ -1,0 +1,71 @@
+title: "ChatGPTでゆっくり動画を作る方法"
+settings:
+  resolution: [1920, 1080]
+  fps: 30
+
+scenes:
+  - id: intro
+    lines:
+      - character: reimu
+        text: "ゆっくりしていってね！"
+        expression: smile
+      - character: marisa
+        text: "今日はちょっと特別な話をするぜ！"
+        expression: excited
+      - character: reimu
+        text: "特別？何かあるの？"
+        expression: normal
+
+  - id: reveal
+    lines:
+      - character: marisa
+        text: "実はこの動画、ほとんどAIが作ってるんだぜ！"
+        expression: smug
+      - character: reimu
+        text: "え！？AIって、ChatGPTとか？"
+        expression: surprised
+      - character: marisa
+        text: "そう！台本から音声、動画編集まで自動化できるんだ"
+        expression: normal
+      - character: reimu
+        text: "すごい時代になったわね…"
+        expression: thinking
+
+  - id: explanation
+    lines:
+      - character: marisa
+        text: "VOICEVOXで音声を生成して、MoviePyで動画を合成する"
+        expression: normal
+      - character: reimu
+        text: "私たちの声もAIなの？"
+        expression: normal
+      - character: marisa
+        text: "VOICEVOXっていう無料の音声合成ソフトを使ってるぜ"
+        expression: normal
+      - character: reimu
+        text: "無料なの！？太っ腹ね！"
+        expression: smile
+
+  - id: meta
+    lines:
+      - character: marisa
+        text: "この台本自体もChatGPTに書いてもらったんだぜ"
+        expression: wink
+      - character: reimu
+        text: "メタいわね…私たちの存在意義は…"
+        expression: sad
+      - character: marisa
+        text: "まあまあ、人間とAIの協力ってことで！"
+        expression: smile
+      - character: reimu
+        text: "そ、そうね！これからもよろしくね！"
+        expression: smile
+
+  - id: ending
+    lines:
+      - character: reimu
+        text: "チャンネル登録と高評価よろしくね！"
+        expression: smile
+      - character: marisa
+        text: "次の動画もAIと一緒に作るぜ！またな！"
+        expression: wink

@@ -1,0 +1,26 @@
+# 素材自動ダウンロードリスト
+# フォーマット: [タイプ] [URL]
+# タイプ: background, bgm, sfx, character, font
+
+# === 背景画像（例） ===
+# background https://example.com/bg_room.png
+# background https://example.com/bg_outdoor.png
+
+# === BGM（DOVA-SYNDROME等からダウンロード） ===
+# bgm https://example.com/calm_bgm.mp3
+# bgm https://example.com/exciting_bgm.mp3
+
+# === 効果音（効果音ラボ等からダウンロード） ===
+# sfx https://example.com/decision.wav
+# sfx https://example.com/surprise.wav
+
+# ===================================================
+# 注意: 上記は例です。実際のダウンロードには
+# 各素材サイトの利用規約を確認してください。
+#
+# 推奨無料素材サイト:
+#   背景: いらすとや、ぱくたそ、Pixabay
+#   BGM: DOVA-SYNDROME、甘茶の音楽工房、魔王魂
+#   効果音: 効果音ラボ、OtoLogic
+#   キャラ: ニコニコで「ゆっくり 素材」検索
+# ===================================================

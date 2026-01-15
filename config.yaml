@@ -1,0 +1,65 @@
+# ゆっくり解説動画生成システム設定
+
+# VOICEVOX設定
+voicevox:
+  url: "http://localhost:50021"
+  default_speaker: 0  # ずんだもん
+  speakers:
+    reimu: 0   # ずんだもん (霊夢役)
+    marisa: 1  # 四国めたん (魔理沙役)
+
+# 動画設定
+video:
+  resolution: [1920, 1080]
+  fps: 30
+  codec: "libx264"
+  audio_codec: "aac"
+  bitrate: "8000k"
+  preset: "medium"
+
+# 字幕設定
+subtitle:
+  font: "assets/fonts/NotoSansJP-Bold.ttf"
+  font_size: 48
+  color: "#FFFFFF"
+  stroke_color: "#000000"
+  stroke_width: 3
+  position: "bottom"  # top, center, bottom
+  margin_bottom: 80
+
+# キャラクター設定
+characters:
+  reimu:
+    name: "霊夢"
+    position: [300, 600]  # 画面左下
+    scale: 0.8
+    default_expression: "normal"
+  marisa:
+    name: "魔理沙"
+    position: [1620, 600]  # 画面右下
+    scale: 0.8
+    default_expression: "normal"
+
+# 素材パス
+paths:
+  characters: "assets/characters"
+  backgrounds: "assets/backgrounds"
+  bgm: "assets/bgm"
+  sfx: "assets/sfx"
+  fonts: "assets/fonts"
+  output_audio: "output/audio"
+  output_video: "output/video"
+
+# タイミング設定
+timing:
+  fade_in_duration: 0.5
+  fade_out_duration: 0.5
+  line_pause: 0.3  # セリフ間の間（秒）
+  scene_transition: 1.0
+
+# AI台本生成（オプション）
+ai:
+  enabled: false
+  provider: "openai"  # openai or gemini
+  model: "gpt-4"
+  # api_key: "YOUR_API_KEY"  # 環境変数 OPENAI_API_KEY を推奨
