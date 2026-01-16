@@ -184,6 +184,9 @@ def generate(
                 # 両キャラクターを常時表示（話している方を強調）
                 speaking_char = line.character.lower()
                 
+                # キャラクタークリップの長さ = セリフ時間 + ポーズ時間（次のセリフまで常時表示）
+                char_duration = duration + line.pause_after
+                
                 # 霊夢の立ち絵（左側、右向き）
                 reimu_config = config.get_character_config("reimu")
                 reimu_image = char_manager.get_expression_path(
@@ -198,7 +201,7 @@ def generate(
                         character="reimu",
                         expression=line.expression if speaking_char == "reimu" else "normal",
                         start_time=current_time,
-                        duration=duration,
+                        duration=char_duration,  # ポーズを含む
                         image_path=reimu_image,
                         position=reimu_pos,
                         scale=reimu_scale,
@@ -219,7 +222,7 @@ def generate(
                         character="marisa",
                         expression=line.expression if speaking_char == "marisa" else "normal",
                         start_time=current_time,
-                        duration=duration,
+                        duration=char_duration,  # ポーズを含む
                         image_path=marisa_image,
                         position=marisa_pos,
                         scale=marisa_scale,
@@ -232,7 +235,7 @@ def generate(
                     text=subtitle_text,
                     character=line.character,
                     start_time=current_time,
-                    duration=duration,
+                    duration=duration,  # セリフはポーズを含まない
                     audio_path=audio_path,
                     expression=line.expression,
                 )
