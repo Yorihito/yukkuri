@@ -197,8 +197,8 @@ class VideoRenderer:
         self,
         text: str,
         duration: float,
-        text_color: tuple = (80, 80, 100),
-        bg_color: tuple = (25, 25, 35),
+        text_color: tuple = (100, 90, 130),  # 薄紫のテキスト
+        bg_color: tuple = (60, 55, 80),      # 薄紫の背景
         font_size: int = 28,
     ) -> CompositeVideoClip:
         """
@@ -293,11 +293,10 @@ class VideoRenderer:
         
         # 背景クリップを作成
         if scrolling_text:
-            # スクロールテキスト背景を使用
+            # スクロールテキスト背景を使用（薄紫の背景）
             bg_clip = self.create_scrolling_text_background(
                 scrolling_text,
                 total_duration,
-                text_color=(90, 90, 110),  # 少し明るめ
             )
             video_clips.append(bg_clip)
         else:

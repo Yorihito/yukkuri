@@ -181,25 +181,49 @@ def generate(
                 audio_processor = AudioProcessor()
                 duration = audio_processor.get_duration_from_file(audio_path)
                 
-                # キャラクター立ち絵パスを取得
-                char_image_path = char_manager.get_expression_path(line.character, line.expression)
-                char_config = config.get_character_config(line.character)
+                # 両キャラクターを常時表示（話している方を強調）
+                speaking_char = line.character.lower()
                 
-                # キャラクタークリップをタイムラインに追加
-                if char_image_path and char_image_path.exists():
-                    position = char_config.position if char_config else (960, 600)
-                    scale = char_config.scale if char_config else 0.8
-                    # 左側のキャラクター（reimu）は左右反転して右向きに
-                    flip = line.character.lower() == "reimu"
+                # 霊夢の立ち絵（左側、右向き）
+                reimu_config = config.get_character_config("reimu")
+                reimu_image = char_manager.get_expression_path(
+                    "reimu", 
+                    line.expression if speaking_char == "reimu" else "normal"
+                )
+                if reimu_image and reimu_image.exists():
+                    reimu_pos = reimu_config.position if reimu_config else (350, 650)
+                    # 話している時は大きく、聞いている時は小さく
+                    reimu_scale = 0.9 if speaking_char == "reimu" else 0.75
                     timeline.add_character(
-                        character=line.character,
-                        expression=line.expression,
+                        character="reimu",
+                        expression=line.expression if speaking_char == "reimu" else "normal",
                         start_time=current_time,
                         duration=duration,
-                        image_path=char_image_path,
-                        position=position,
-                        scale=scale,
-                        flip_horizontal=flip,
+                        image_path=reimu_image,
+                        position=reimu_pos,
+                        scale=reimu_scale,
+                        flip_horizontal=True,  # 右向き
+                    )
+                
+                # 魔理沙の立ち絵（右側、左向き）
+                marisa_config = config.get_character_config("marisa")
+                marisa_image = char_manager.get_expression_path(
+                    "marisa",
+                    line.expression if speaking_char == "marisa" else "normal"
+                )
+                if marisa_image and marisa_image.exists():
+                    marisa_pos = marisa_config.position if marisa_config else (1570, 650)
+                    # 話している時は大きく、聞いている時は小さく
+                    marisa_scale = 0.9 if speaking_char == "marisa" else 0.75
+                    timeline.add_character(
+                        character="marisa",
+                        expression=line.expression if speaking_char == "marisa" else "normal",
+                        start_time=current_time,
+                        duration=duration,
+                        image_path=marisa_image,
+                        position=marisa_pos,
+                        scale=marisa_scale,
+                        flip_horizontal=False,  # 左向き（元のまま）
                     )
                 
                 # セリフをタイムラインに追加（話者名付き）
