@@ -20,10 +20,10 @@ class SubtitleGenerator:
     def __init__(
         self,
         font_path: Optional[str] = None,
-        font_size: int = 48,
-        color: str = "#FFFFFF",
-        stroke_color: str = "#000000",
-        stroke_width: int = 3,
+        font_size: Optional[int] = None,
+        color: Optional[str] = None,
+        stroke_color: Optional[str] = None,
+        stroke_width: Optional[int] = None,
     ):
         """
         Args:
@@ -36,11 +36,12 @@ class SubtitleGenerator:
         self.logger = get_logger()
         config = Config.get()
         
+        # configから設定を読み込む（引数で上書き可能）
         self.font_path = font_path or config.subtitle.font
-        self.font_size = font_size
-        self.color = color
-        self.stroke_color = stroke_color
-        self.stroke_width = stroke_width
+        self.font_size = font_size or config.subtitle.font_size
+        self.color = color or config.subtitle.color
+        self.stroke_color = stroke_color or config.subtitle.stroke_color
+        self.stroke_width = stroke_width if stroke_width is not None else config.subtitle.stroke_width
         
         # フォントの読み込み
         self._font: Optional[ImageFont.FreeTypeFont] = None
