@@ -26,22 +26,11 @@ env/
 .venv/
 .env/
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
+# Character assets (copyright protection)
+assets/
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Output files (optional - comment out if you want to track outputs)
-output/audio/*
-output/video/*
-!output/audio/.gitkeep
-!output/video/.gitkeep
+# Output (generated locally)
+output/
 
 # Logs
 *.log

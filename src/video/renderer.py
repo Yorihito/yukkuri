@@ -94,8 +94,11 @@ class VideoRenderer:
                 clip = clip.subclip(0, duration)
             return clip.resize(self.resolution)
         else:
-            # 画像背景
-            return ImageClip(str(path), duration=duration).resize(self.resolution)
+            # 画像背景 - Pillowでリサイズしてから読み込み
+            img = Image.open(path).convert("RGB")
+            img = img.resize(self.resolution, Image.Resampling.LANCZOS)
+            img_array = np.array(img)
+            return ImageClip(img_array, duration=duration)
 
     def create_character_clip(
         self,
@@ -105,6 +108,7 @@ class VideoRenderer:
         scale: float = 1.0,
         fade_in: float = 0.0,
         fade_out: float = 0.0,
+        flip_horizontal: bool = False,
     ) -> ImageClip:
         """
         キャラクター立ち絵クリップを作成
@@ -116,17 +120,29 @@ class VideoRenderer:
             scale: スケール
             fade_in: フェードイン時間
             fade_out: フェードアウト時間
+            flip_horizontal: 左右反転（Trueで右向きに）
         
         Returns:
             キャラクタークリップ
         """
-        clip = ImageClip(str(image_path), duration=duration)
+        # Pillowで読み込み（RGBAサポート）
+        img = Image.open(image_path).convert("RGBA")
+        
+        # 左右反転
+        if flip_horizontal:
+            img = img.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
         
         if scale != 1.0:
-            clip = clip.resize(scale)
+            new_size = (int(img.width * scale), int(img.height * scale))
+            img = img.resize(new_size, Image.Resampling.LANCZOS)
         
-        # 位置設定（中心基準）
-        clip = clip.set_position(position)
+        img_array = np.array(img)
+        clip = ImageClip(img_array, duration=duration, transparent=True)
+        
+        # 位置設定（中心基準から左上を計算）
+        pos_x = position[0] - img.width // 2
+        pos_y = position[1] - img.height // 2
+        clip = clip.set_position((pos_x, pos_y))
         
         # フェード適用
         if fade_in > 0:
@@ -177,6 +193,68 @@ class VideoRenderer:
         
         return clip
 
+    def create_scrolling_text_background(
+        self,
+        text: str,
+        duration: float,
+        text_color: tuple = (80, 80, 100),
+        bg_color: tuple = (25, 25, 35),
+        font_size: int = 28,
+    ) -> CompositeVideoClip:
+        """
+        下から上にスクロールするテキスト背景を作成
+        
+        Args:
+            text: スクロールするテキスト
+            duration: 持続時間
+            text_color: テキスト色 (RGB)
+            bg_color: 背景色 (RGB)
+            font_size: フォントサイズ
+        
+        Returns:
+            スクロールテキスト背景クリップ
+        """
+        from moviepy.editor import VideoClip
+        from PIL import ImageDraw, ImageFont
+        
+        # フォント読み込み
+        try:
+            font = ImageFont.truetype("/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc", font_size)
+        except:
+            font = ImageFont.load_default()
+        
+        # テキスト描画エリア（横80%）
+        text_width = int(self.resolution[0] * 0.8)
+        margin_x = int(self.resolution[0] * 0.1)
+        line_height = int(font_size * 1.4)
+        
+        # テキストを行に分割
+        lines = text.strip().split("\n")
+        total_text_height = len(lines) * line_height
+        
+        # スクロール範囲: 画面下端から始まり、テキストが全部上に消えるまで
+        scroll_range = self.resolution[1] + total_text_height
+        
+        def make_frame(t):
+            # 背景画像作成
+            img = Image.new("RGB", self.resolution, bg_color)
+            draw = ImageDraw.Draw(img)
+            
+            # スクロール位置計算（下から上へ）
+            progress = t / duration
+            start_y = self.resolution[1] - int(progress * scroll_range)
+            
+            # テキスト描画
+            for i, line in enumerate(lines):
+                y = start_y + i * line_height
+                # 画面内のテキストのみ描画
+                if -line_height < y < self.resolution[1]:
+                    draw.text((margin_x, y), line, font=font, fill=text_color)
+            
+            return np.array(img)
+        
+        return VideoClip(make_frame, duration=duration)
+
     def render_from_timeline(
         self,
         timeline: Timeline,
@@ -186,6 +264,7 @@ class VideoRenderer:
         bitrate: str = "8000k",
         preset: str = "medium",
         threads: int = 4,
+        scrolling_text: Optional[str] = None,
     ) -> Path:
         """
         タイムラインから動画をレンダリング
@@ -198,6 +277,7 @@ class VideoRenderer:
             bitrate: ビットレート
             preset: エンコードプリセット
             threads: スレッド数
+            scrolling_text: スクロールテキスト（指定時はテキストスクロール背景を使用）
         
         Returns:
             出力ファイルパス
@@ -212,24 +292,33 @@ class VideoRenderer:
         audio_clips = []
         
         # 背景クリップを作成
-        bg_items = timeline.get_items_by_type(ItemType.BACKGROUND)
-        if bg_items:
-            for item in bg_items:
-                if item.image_path and item.image_path.exists():
-                    clip = self.create_background_clip(
-                        item.image_path,
-                        item.duration,
-                    ).set_start(item.start_time)
-                    video_clips.append(clip)
-        else:
-            # デフォルト背景（黒）
-            video_clips.append(
-                ColorClip(
-                    size=self.resolution,
-                    color=(30, 30, 30),
-                    duration=total_duration,
-                )
+        if scrolling_text:
+            # スクロールテキスト背景を使用
+            bg_clip = self.create_scrolling_text_background(
+                scrolling_text,
+                total_duration,
+                text_color=(90, 90, 110),  # 少し明るめ
             )
+            video_clips.append(bg_clip)
+        else:
+            bg_items = timeline.get_items_by_type(ItemType.BACKGROUND)
+            if bg_items:
+                for item in bg_items:
+                    if item.image_path and item.image_path.exists():
+                        clip = self.create_background_clip(
+                            item.image_path,
+                            item.duration,
+                        ).set_start(item.start_time)
+                        video_clips.append(clip)
+            else:
+                # デフォルト背景（黒）
+                video_clips.append(
+                    ColorClip(
+                        size=self.resolution,
+                        color=(30, 30, 30),
+                        duration=total_duration,
+                    )
+                )
         
         # キャラクタークリップ
         char_items = timeline.get_items_by_type(ItemType.CHARACTER)
@@ -243,6 +332,7 @@ class VideoRenderer:
                     item.scale,
                     item.fade_in,
                     item.fade_out,
+                    flip_horizontal=item.flip_horizontal,
                 ).set_start(item.start_time)
                 video_clips.append(clip)
         
@@ -267,8 +357,14 @@ class VideoRenderer:
             if item.audio_path and item.audio_path.exists():
                 audio = AudioFileClip(str(item.audio_path))
                 
-                # 長さ調整
-                if audio.duration > item.duration:
+                # 長さ調整（短い場合はループ、長い場合はカット）
+                if audio.duration < item.duration:
+                    # BGMが短い場合はループ
+                    from moviepy.editor import concatenate_audioclips
+                    loops_needed = int(item.duration / audio.duration) + 1
+                    audio = concatenate_audioclips([audio] * loops_needed)
+                    audio = audio.subclip(0, item.duration)
+                elif audio.duration > item.duration:
                     audio = audio.subclip(0, item.duration)
                 
                 # フェード適用
@@ -278,8 +374,8 @@ class VideoRenderer:
                     audio = audio.audio_fadeout(item.fade_out)
                 
                 audio = audio.set_start(item.start_time)
-                # BGMは音量を下げる
-                audio = audio.volumex(0.3)
+                # BGMは音量を下げる（0.15 = 控えめ）
+                audio = audio.volumex(0.15)
                 audio_clips.append(audio)
         
         # 効果音

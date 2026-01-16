@@ -3,10 +3,10 @@
 # VOICEVOX設定
 voicevox:
   url: "http://localhost:50021"
-  default_speaker: 0  # ずんだもん
+  default_speaker: 2  # 四国めたん
   speakers:
-    reimu: 0   # ずんだもん (霊夢役)
-    marisa: 1  # 四国めたん (魔理沙役)
+    reimu: 2   # 四国めたん (霊夢役)
+    marisa: 3  # ずんだもん (魔理沙役)
 
 # 動画設定
 video:
@@ -20,7 +20,7 @@ video:
 # 字幕設定
 subtitle:
   font: "assets/fonts/NotoSansJP-Bold.ttf"
-  font_size: 48
+  font_size: 47
   color: "#FFFFFF"
   stroke_color: "#000000"
   stroke_width: 3

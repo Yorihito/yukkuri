@@ -41,6 +41,7 @@ class TimelineItem(BaseModel):
     position: Optional[tuple[int, int]] = None  # 表示位置
     scale: float = 1.0                          # スケール
     opacity: float = 1.0                        # 不透明度
+    flip_horizontal: bool = False               # 左右反転
     
     # エフェクト
     fade_in: float = 0.0   # フェードイン（秒）

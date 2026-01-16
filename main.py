@@ -135,6 +135,9 @@ def generate(
         console.print("[red]エラー: VOICEVOXが起動していません[/red]")
         raise typer.Exit(1)
     
+    # キャラクターマネージャー
+    char_manager = CharacterManager()
+    
     # タイムライン作成
     timeline = Timeline()
     current_time = 0.0
@@ -142,6 +145,10 @@ def generate(
     audio_dir = Path(config.paths.output_audio)
     audio_files = []
     
+    # スクロール用の台本テキスト収集
+    script_lines_for_scroll = []
+    
+    # まず全体の時間を計算するために音声を生成
     with Progress(
         SpinnerColumn(),
         TextColumn("[bold blue]{task.description}"),
@@ -151,14 +158,12 @@ def generate(
         
         line_index = 0
         for scene in script_data.scenes:
-            # 背景
-            if scene.background:
-                asset_manager = AssetManager()
-                bg_path = asset_manager.get_background(scene.background)
-                if bg_path:
-                    timeline.add_background(bg_path, current_time, 999)  # 仮の長さ
-            
             for line in scene.lines:
+                # スクロール用テキスト収集
+                display_name = config.get_character_config(line.character)
+                name = display_name.name if display_name else line.character
+                script_lines_for_scroll.append(f"{name}: {line.text}")
+                
                 # 音声生成
                 speaker_id = config.get_speaker_id(line.character)
                 audio_path = audio_dir / f"line_{line_index:04d}.wav"
@@ -176,9 +181,31 @@ def generate(
                 audio_processor = AudioProcessor()
                 duration = audio_processor.get_duration_from_file(audio_path)
                 
-                # タイムラインに追加
+                # キャラクター立ち絵パスを取得
+                char_image_path = char_manager.get_expression_path(line.character, line.expression)
+                char_config = config.get_character_config(line.character)
+                
+                # キャラクタークリップをタイムラインに追加
+                if char_image_path and char_image_path.exists():
+                    position = char_config.position if char_config else (960, 600)
+                    scale = char_config.scale if char_config else 0.8
+                    # 左側のキャラクター（reimu）は左右反転して右向きに
+                    flip = line.character.lower() == "reimu"
+                    timeline.add_character(
+                        character=line.character,
+                        expression=line.expression,
+                        start_time=current_time,
+                        duration=duration,
+                        image_path=char_image_path,
+                        position=position,
+                        scale=scale,
+                        flip_horizontal=flip,
+                    )
+                
+                # セリフをタイムラインに追加（話者名付き）
+                subtitle_text = f"【{name}】{line.text}"
                 timeline.add_dialogue(
-                    text=line.text,
+                    text=subtitle_text,
                     character=line.character,
                     start_time=current_time,
                     duration=duration,
@@ -189,6 +216,14 @@ def generate(
                 current_time += duration + line.pause_after
                 line_index += 1
                 progress.update(task, advance=1)
+    
+    # BGMを追加
+    asset_manager = AssetManager()
+    bgm_files = list(Path(config.paths.bgm).glob("*.mp3")) + list(Path(config.paths.bgm).glob("*.wav"))
+    if bgm_files:
+        bgm_path = bgm_files[0]
+        timeline.add_bgm(bgm_path, 0.0, current_time, fade_in=2.0, fade_out=3.0)
+        console.print(f"[green]BGM追加: {bgm_path.name}[/green]")
     
     console.print(f"[green]音声生成完了: {len(audio_files)}ファイル[/green]")
     console.print(f"総時間: {current_time:.2f}秒")
@@ -208,7 +243,14 @@ def generate(
             progress.add_task("動画レンダリング中...", total=None)
             
             renderer = VideoRenderer()
-            renderer.render_from_timeline(timeline, output)
+            
+            # スクロールテキスト背景を直接render_from_timelineに渡す
+            scroll_text = "\n".join(script_lines_for_scroll)
+            renderer.render_from_timeline(
+                timeline, 
+                output,
+                scrolling_text=scroll_text,
+            )
         
         console.print(f"[green]動画生成完了: {output}[/green]")
 

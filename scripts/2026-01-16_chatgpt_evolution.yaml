@@ -1,0 +1,243 @@
+# ChatGPT進化解説 - 3年間の変化
+# 作成日: 2026-01-16
+
+title: "ChatGPTの進化 - この3年間で何が変わったのか"
+settings:
+  resolution: [1920, 1080]
+  fps: 30
+  background: "script_text_bg.png"
+
+scenes:
+  - id: opening
+    lines:
+      - character: reimu
+        text: "皆様、お久しぶりです。"
+        expression: smile
+      - character: reimu
+        text: "前回ChatGPTについて解説してから、およそ3年が経ちました。"
+        expression: normal
+      - character: marisa
+        text: "あれからAIの話、やたら聞くようになったよな。"
+        expression: normal
+      - character: marisa
+        text: "で、ChatGPTの中身って、実際どう進化したんだ？"
+        expression: thinking
+      - character: reimu
+        text: "今回は、そこを重点的に解説していきますね。"
+        expression: normal
+
+  - id: llm_basics
+    lines:
+      - character: reimu
+        text: "まず前提として、ChatGPTは「大規模言語モデル」と呼ばれるAIです。"
+        expression: normal
+      - character: marisa
+        text: "前も聞いたけど、結局それって何なんだ？"
+        expression: thinking
+      - character: reimu
+        text: "簡単に言うと、"
+        expression: normal
+      - character: reimu
+        text: "大量の文章を学習して、「次に来そうな言葉」を予測する仕組みです。"
+        expression: normal
+      - character: marisa
+        text: "予測だけで、あんな会話ができるのか？"
+        expression: surprised
+      - character: reimu
+        text: "実は、それがこの技術の面白いところなんです。"
+        expression: smile
+      - character: reimu
+        text: "文脈全体を数値として扱い、確率的に最適な文章を生成しています。"
+        expression: normal
+
+  - id: three_changes
+    lines:
+      - character: marisa
+        text: "なるほどな。"
+        expression: normal
+      - character: marisa
+        text: "じゃあ、この3年で何が一番変わったんだ？"
+        expression: thinking
+      - character: reimu
+        text: "大きく分けて三つあります。"
+        expression: normal
+      - character: reimu
+        text: "モデルの規模、理解の深さ、そして扱える情報の種類です。"
+        expression: normal
+      - character: marisa
+        text: "おお、いきなり本格的だな。"
+        expression: excited
+
+  - id: scale
+    lines:
+      - character: reimu
+        text: "まずモデルの規模ですが、"
+        expression: normal
+      - character: reimu
+        text: "学習に使われるパラメータ数が増え、より複雑な関係を表現できるようになりました。"
+        expression: normal
+      - character: marisa
+        text: "パラメータって、脳みその細かさみたいなもんか？"
+        expression: thinking
+      - character: reimu
+        text: "とても良い例えですね。"
+        expression: smile
+      - character: reimu
+        text: "それが増えたことで、文脈の保持力が大きく向上しました。"
+        expression: normal
+      - character: marisa
+        text: "だから長い会話でも話を忘れにくくなったんだな。"
+        expression: normal
+      - character: reimu
+        text: "その通りです。"
+        expression: smile
+
+  - id: understanding
+    lines:
+      - character: reimu
+        text: "次に、理解の深さについてです。"
+        expression: normal
+      - character: reimu
+        text: "単語単位ではなく、文章全体の意味構造を捉えやすくなりました。"
+        expression: normal
+      - character: marisa
+        text: "つまり、行間を読む力が上がったってことか？"
+        expression: thinking
+      - character: reimu
+        text: "はい。"
+        expression: normal
+      - character: reimu
+        text: "あいまいな指示や、省略された表現にも強くなっています。"
+        expression: normal
+      - character: marisa
+        text: "それは人間っぽくなってきたな。"
+        expression: smile
+
+  - id: multimodal
+    lines:
+      - character: reimu
+        text: "そして三つ目が、マルチモーダル化です。"
+        expression: normal
+      - character: reimu
+        text: "文章だけでなく、画像や音声も一緒に扱えるようになりました。"
+        expression: normal
+      - character: marisa
+        text: "写真を見て説明できるのは、そのおかげか。"
+        expression: normal
+      - character: reimu
+        text: "はい。"
+        expression: normal
+      - character: reimu
+        text: "内部では、画像や音声も数値データに変換され、"
+        expression: normal
+      - character: reimu
+        text: "文章と同じ空間で処理されています。"
+        expression: normal
+      - character: marisa
+        text: "全部、数字の世界で統一されてるってわけだな。"
+        expression: normal
+      - character: reimu
+        text: "その結果、図を見ながら説明したり、"
+        expression: normal
+      - character: reimu
+        text: "資料を読んで要約したりできるようになったのです。"
+        expression: normal
+      - character: marisa
+        text: "技術的には、かなり無茶してる気がするぜ。"
+        expression: surprised
+      - character: reimu
+        text: "実際、とても高度な技術です。"
+        expression: normal
+
+  - id: caution
+    lines:
+      - character: reimu
+        text: "ただし、注意点もあります。"
+        expression: normal
+      - character: reimu
+        text: "ChatGPTは「理解しているように見える」だけで、"
+        expression: normal
+      - character: reimu
+        text: "人間のような意識や判断力を持っているわけではありません。"
+        expression: normal
+      - character: marisa
+        text: "あくまで予測マシンってことか。"
+        expression: thinking
+      - character: reimu
+        text: "その通りです。"
+        expression: normal
+      - character: reimu
+        text: "だからこそ、使う側が正しく理解する必要があります。"
+        expression: normal
+      - character: marisa
+        text: "仕組みを知って使えば、強力な道具になるわけだな。"
+        expression: smile
+
+  - id: summary
+    lines:
+      - character: reimu
+        text: "はい。"
+        expression: normal
+      - character: reimu
+        text: "この3年間で、ChatGPTは"
+        expression: normal
+      - character: reimu
+        text: "「文章生成AI」から「知的作業支援システム」へと進化しました。"
+        expression: normal
+      - character: marisa
+        text: "なるほどなあ。"
+        expression: normal
+      - character: marisa
+        text: "中身を知ると、ますます面白く感じるぜ。"
+        expression: smile
+      - character: reimu
+        text: "今後は、さらに専門分野への対応も進んでいくでしょう。"
+        expression: normal
+      - character: marisa
+        text: "次はどこまで行くのか、楽しみだな！"
+        expression: excited
+
+  - id: production
+    lines:
+      - character: marisa
+        text: "そういえば、この動画自体もかなりハイテクだよな？"
+        expression: thinking
+      - character: reimu
+        text: "ふふ、気づきましたか。"
+        expression: smile
+      - character: reimu
+        text: "実はこの動画、AntigravityというAIエージェントが"
+        expression: normal
+      - character: reimu
+        text: "Claudeを使ってほぼ全自動で作っているんです。"
+        expression: smile
+      - character: marisa
+        text: "え！？台本も音声も全部AIが？"
+        expression: surprised
+      - character: reimu
+        text: "はい。VOICEVOXで音声を生成して、"
+        expression: normal
+      - character: reimu
+        text: "Pythonで動画を自動合成しています。"
+        expression: normal
+      - character: marisa
+        text: "まさにAIが解説動画を作る時代だな！"
+        expression: excited
+      - character: reimu
+        text: "私たちが話している内容を、私たちがAIで表現しているわけですね。"
+        expression: smile
+      - character: marisa
+        text: "メタすぎるぜ…！"
+        expression: smile
+
+  - id: ending
+    lines:
+      - character: reimu
+        text: "それでは、今回はこの辺で。"
+        expression: normal
+      - character: reimu
+        text: "ゆっくりしていってね！！！"
+        expression: smile
+      - character: marisa
+        text: "ゆっくりしていってね！！！"
+        expression: smile
