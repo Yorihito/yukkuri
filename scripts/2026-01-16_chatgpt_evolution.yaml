@@ -104,10 +104,7 @@ scenes:
         text: "つまり、行間を読む力が上がったってことか？"
         expression: thinking
       - character: reimu
-        text: "はい。"
-        expression: normal
-      - character: reimu
-        text: "あいまいな指示や、省略された表現にも強くなっています。"
+        text: "はい、あいまいな指示や、省略された表現にも強くなっています。"
         expression: normal
       - character: marisa
         text: "それは人間っぽくなってきたな。"
@@ -125,10 +122,7 @@ scenes:
         text: "写真を見て説明できるのは、そのおかげか。"
         expression: normal
       - character: reimu
-        text: "はい。"
-        expression: normal
-      - character: reimu
-        text: "内部では、画像や音声も数値データに変換され、"
+        text: "はい、内部では画像や音声も数値データに変換され、"
         expression: normal
       - character: reimu
         text: "文章と同じ空間で処理されています。"
@@ -176,10 +170,7 @@ scenes:
   - id: summary
     lines:
       - character: reimu
-        text: "はい。"
-        expression: normal
-      - character: reimu
-        text: "この3年間で、ChatGPTは"
+        text: "はい、この3年間でChatGPTは"
         expression: normal
       - character: reimu
         text: "「文章生成AI」から「知的作業支援システム」へと進化しました。"
@@ -218,7 +209,7 @@ scenes:
         text: "はい。VOICEVOXで音声を生成して、"
         expression: normal
       - character: reimu
-        text: "Pythonで動画を自動合成しています。"
+        text: "Pythonで動画を自動合成しています。人間は動画みてレビューして文句いうだけです。"
         expression: normal
       - character: marisa
         text: "まさにAIが解説動画を作る時代だな！"
